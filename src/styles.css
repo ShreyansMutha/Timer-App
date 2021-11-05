@@ -1,0 +1,143 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400,800&display=swap");
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Poppins, sans-serif;
+}
+
+:root {
+  --primary-color: #aa14f0;
+  --white-color: #f6f6f6;
+  --black-color: #161616;
+}
+/* 
+.main-grid {
+  display: grid;
+  place-items: center;
+  height: 40rem;
+  width: 40rem;
+  border-radius: 55px;
+  background-color: var(--white-color);
+  padding: 1rem;
+} */
+
+.Timer {
+  font-family: sans-serif;
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--primary-color);
+  color: var(--black-color);
+  font-weight: bold;
+  font-family: Poppins;
+  font-size: 4rem;
+}
+
+.Timer {
+  display: grid;
+  place-items: center;
+}
+
+.Timer p {
+  cursor: grab;
+}
+.Timer p:active {
+  cursor: grabbing;
+}
+.Timer p::selection {
+  color: white;
+  background: black;
+}
+
+.container {
+  height: 40rem;
+  width: 40rem;
+  background-color: var(--white-color);
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+  border-radius: 55px;
+  box-shadow: 20px 20px 40px rgba(60, 60, 150, 0.25);
+  display: grid;
+  place-items: center;
+}
+
+.circular-progress {
+  position: relative;
+  height: 20rem;
+  width: 20rem;
+  background-color: var(--primary-color);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+}
+
+.circular-progress::before {
+  content: "";
+  position: absolute;
+  height: 94%;
+  width: 94%;
+  background-color: var(--white-color);
+  border-radius: 50%;
+}
+
+.value-container {
+  position: relative;
+  font-family: Poppins, sans-serif;
+  font-size: 50px;
+  color: var(--black-color);
+}
+
+.addMin {
+  font-family: inherit;
+  border: 3px solid #161616;
+  color: #161616;
+  padding: 1rem;
+  border-radius: 9999px;
+  box-shadow: 0px 2px 10px #161616;
+  cursor: pointer;
+  font-size: 20px;
+  transition: all 100ms linear;
+}
+
+.percentage-block {
+  display: block;
+  text-align: center;
+  font-weight: lighter;
+  font-size: 1.5rem;
+  margin-top: 1.9rem;
+}
+
+.addMin:active {
+  transform: scale(0.97);
+  box-shadow: 0px 1px 5px #161616;
+}
+
+.addMin:hover {
+  color: var(--primary-color);
+  background-color: var(--white-color);
+  border-color: var(--primary-color);
+}
+
+.flash {
+  animation: blinker 0.9s linear infinite;
+}
+
+@keyframes blinker {
+  0% {
+    opacity: 1;
+  }
+  30% {
+    opacity: 0;
+  }
+  70% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

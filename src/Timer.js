@@ -1,15 +1,29 @@
 import React, { useState, useEffect } from "react";
 
 const Timer = ({ hoursMinSecs }) => {
-  let { hours, minutes, seconds } = hoursMinSecs;
+  const { hours, minutes, seconds } = hoursMinSecs;
+
   const [pause, setPause] = useState(false);
-  const [music, setMusic] = useState(false);
+  const [musicPlaying, setMusicPlaying] = useState(false);
   const [minute, setMinute] = useState(minutes);
   const [percentage, setPercentage] = useState(0);
-
   const [[hrs, mins, secs], setTime] = useState([hours, minutes, seconds]);
+
+  useEffect(() => {
+    let timerId;
+    if (pause) {
+      timerId = setInterval(() => {
+        tick();
+      }, 1000);
+      trackProgress();
+    }
+
+    return () => clearInterval(timerId);
+  }, [pause, hrs, mins, secs]);
+
   const tick = () => {
     if (hrs === 0 && mins === 0 && secs === 0) {
+      pauseTimer();
     } else if (mins === 0 && secs === 0) {
       setTime([hrs - 1, 59, 59]);
     } else if (secs === 0) {
@@ -20,47 +34,47 @@ const Timer = ({ hoursMinSecs }) => {
   };
 
   const trackProgress = () => {
-    let totalTime = +hours * 3600 + +minute * 60 + +seconds;
-    let timeRemaining = +hrs * 3600 + +mins * 60 + +secs;
-    let newPercentage = ((totalTime - timeRemaining) / totalTime) * 100;
+    const totalTime = hours * 3600 + minute * 60 + seconds;
+    const timeRemaining = hrs * 3600 + mins * 60 + secs;
+    const newPercentage = ((totalTime - timeRemaining) / totalTime) * 100;
     setPercentage(newPercentage);
     if (newPercentage === 100) {
       playMusic();
     }
-    //console.log(percentage);
+  };
+
+  const pauseTimer = () => {
+    setPause(false);
+    clearInterval();
   };
 
   const reset = () => {
-    setTime([+hours, +minutes, +seconds]);
+    setTime([hours, minutes, seconds]);
     setPause(true);
   };
 
   const addMin = () => {
-    setTime([hrs, mins + 1, secs]);
-    setMinute(minute + 1);
-    // console.log(minute);
+    setTime(prevState => {
+      const [prevHrs, prevMins, prevSecs] = prevState;
+      if (musicPlaying) {
+        pauseMusic();
+      }
+      setMinute(prevMinute => prevMinute + 1);
+      return [prevHrs, prevMins + 1, prevSecs];
+    });
   };
 
   const playMusic = () => {
-    setMusic(true);
+    setMusicPlaying(true);
     const audioEl = document.getElementsByClassName("audio-element")[0];
     audioEl.play();
   };
 
-  useEffect(() => {
-    var timerId;
-    if (pause) {
-      timerId = setInterval(() => {
-        tick();
-      }, 1000);
-
-      trackProgress();
-      // let timeRemaining = hrs * 3600 + mins * 60 + secs;
-      // console.log(timeRemaining);
-    }
-
-    return () => clearInterval(timerId);
-  });
+  const pauseMusic = () => {
+    setMusicPlaying(false);
+    const audioEl = document.getElementsByClassName("audio-element")[0];
+    audioEl.pause();
+  };
 
   return (
     <div className="base">
